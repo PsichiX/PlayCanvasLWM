@@ -58,3 +58,8 @@ Tool usage:
 7. Attach that JSON into `materialsMapping` attribute.
 
 8. Run your game and check if there is no errors. If you will get an error during LWM model loading, the most reason is that your server does not support CORS correctly - check details in browser debug console!
+
+TODO:
+------
+
+* native `float` data compression (currently it only compress `int`, `uint` and `string`);
