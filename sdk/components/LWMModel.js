@@ -1,7 +1,7 @@
 /**
  * LWMModel component.
  * Author: Patryk 'PsichiX' Budzyński.
- * Last update: 2015-09-26.
+ * Last update: 2015-09-28.
  */
 
 pc.script.attribute('url','string','',{
@@ -82,7 +82,7 @@ pc.script.create('LWMModel', function (app) {
                     this.applyMaterials(modelComponent.model);
                     this.fire('lwm.model:changed', asset);
                 }
-            });
+            }.bind(this));
         }
         
     };
@@ -92,7 +92,7 @@ pc.script.create('LWMModel', function (app) {
         var meshInstances = model.meshInstances,
             configAsset = app.assets.get(this.materialsMapping),
             config,
-            cmi, cm, min, mn, ma, i, c;
+            cmi, cm, min, mn, ma, i, c, tcmi, cmiv;
         
         if(meshInstances && configAsset){
             configAsset.ready(function(asset){
@@ -111,6 +111,18 @@ pc.script.create('LWMModel', function (app) {
                     }
                 }
                 else if(cmi && cm){
+                    if(!Array.isArray(cmi)){
+                        tcmi = [];
+                        for(var k in cmi){
+                            if(cmi.hasOwnProperty(k)){
+                                cmiv = cmi[k];
+                                for(i = 0, c = cmiv.length; i < c; ++i){
+                                    tcmi[cmiv[i]] = k;
+                                }
+                            }
+                        }
+                        cmi = tcmi;
+                    }
                     for(i = 0, c = Math.min(meshInstances.length, cmi.length); i < c; ++i){
                         min = cmi[i];
                         if(cm.hasOwnProperty(min)){
