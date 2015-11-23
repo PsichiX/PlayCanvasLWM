@@ -62,4 +62,4 @@ Tool usage:
 TODO:
 ------
 
-* native `float` data compression (currently it only compress `int`, `uint` and `string`);
+* Add skin and animation data support
