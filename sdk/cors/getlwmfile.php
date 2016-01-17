@@ -11,7 +11,7 @@ if(isset($_GET['file']))
     $fname = 'lwmcontent/'.$fname;
     if(file_exists($fname) && is_readable($fname)) {
         header('Content-type: application/octet-stream');
-        header('Content-length: '.filesize($file));
+        header('Content-length: '.filesize($fname));
         if(isset($_SERVER['HTTP_ORIGIN']))
         {
             header('Access-Control-Allow-Origin: '.$_SERVER['HTTP_ORIGIN']);
