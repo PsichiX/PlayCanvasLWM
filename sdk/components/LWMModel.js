@@ -82,7 +82,7 @@ pc.script.create('LWMModel', function (app) {
                     this.applyMaterials(modelComponent.model);
                     this.fire('lwm.model:changed', asset);
                 }
-            });
+            }.bind(this));
         }
         
     };
@@ -92,7 +92,7 @@ pc.script.create('LWMModel', function (app) {
         var meshInstances = model.meshInstances,
             configAsset = app.assets.get(this.materialsMapping),
             config,
-            cmi, cm, min, mn, ma, i, c;
+            cmi, cm, min, mn, ma, i, c, j;
         
         if(meshInstances && configAsset){
             configAsset.ready(function(asset){
@@ -111,16 +111,21 @@ pc.script.create('LWMModel', function (app) {
                     }
                 }
                 else if(cmi && cm){
-                    for(i = 0, c = Math.min(meshInstances.length, cmi.length); i < c; ++i){
-                        min = cmi[i];
-                        if(cm.hasOwnProperty(min)){
-                            mn = cm[min];
+                    for(var key in cmi){
+                        if(cmi.hasOwnProperty(key) && cm.hasOwnProperty(key)){
+                            min = cmi[key];
+                            mn = cm[key];
                             ma = typeof mn === 'string' ? app.assets.find(mn) : app.assets.get(mn);
-                            ma.ready(function(asset){
-                                meshInstances[i].material = ma.resource;
-                                meshInstances[i].material.update();
-                            }.bind(this));
-                            app.assets.load(ma);
+                            for(i = 0, c = min.length; i < c; ++i){
+                                j = min[i];
+                                if(j < meshInstances.length){
+                                    ma.ready(function(asset){
+                                        meshInstances[j].material = ma.resource;
+                                        meshInstances[j].material.update();
+                                    }.bind(this));
+                                    app.assets.load(ma);
+                                }
+                            }
                         }
                     }
                 }
